@@ -1,0 +1,14 @@
+.env
+.DS_Store
+/results/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.vscode/
+.idea/
+.claude/worktrees/
+/data/
+config/strategy_params.yaml

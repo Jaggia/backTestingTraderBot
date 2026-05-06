@@ -1,0 +1,72 @@
+# Strategy Parameters — copy to strategy_params.yaml and customize
+backtest:
+  eod_cutoff_time: '15:55'
+  is_fraction: 0.0
+costs:
+  commission_per_contract: 0.0
+  slippage_pct: 0.0
+  slippage_per_contract: 0.0
+data:
+  data_source: databento        # databento, alpaca, or tradingview
+  databento_equities_dir: data/DataBento/equities/SYMBOL/5min
+  equities_dir: data/Alpaca/equities/SYMBOL/5min
+  options_dir: data/DataBento/options/SYMBOL/1min
+  tv_equities_dir: data/TV/equities/SYMBOL/5min
+exits:
+  eod_close: false
+  opposite_signal: true
+  profit_target_pct: XX.0       # Take profit at +XX%
+  stop_loss_pct: XX.0           # Stop loss at -XX%
+live:
+  ibkr_host: 127.0.0.1
+  ibkr_port: 4002
+  ibkr_streamer_client_id: 1
+  ibkr_trader_client_id: 2
+  warmup_bars: 200
+monte_carlo:
+  sizing_max_contracts: 20
+  sizing_tolerance_pct: 10.0
+options:
+  sigma: 0.XX                   # Implied volatility for BS fallback
+  strike_selection: ATM          # ATM, 1_ITM, 1_OTM, or target_delta
+  target_delta: 0.XX            # Used when strike_selection: target_delta
+  target_dte: 0                 # Days to expiration
+position:
+  contracts_per_trade: 1
+  max_concurrent_positions: 1
+  sizing_mode: fixed            # fixed or percent_of_equity
+  sizing_pct: 10                # % of equity per trade (when sizing_mode: percent_of_equity)
+signals:
+  # Sequential trigger chain (arm->fire). Set sequential: true for ordered triggers.
+  trigger_chain:
+    triggers:
+      - indicator: smi          # First indicator arms
+      - indicator: williams_r   # Second fires and disarms
+    sequential: true
+    sync_window: X              # Max bars between arm and fire
+    vwap_filter: false          # Filter signals above/below VWAP
+
+  # Indicator parameters (customize periods for your strategy)
+  smi_fast:
+    period: X
+    smooth1: X
+    smooth2: X
+  smi_slow:
+    period: X
+    smooth1: X
+    smooth2: X
+  williams_r:
+    period: X
+
+  # Additional indicators available for trigger chains
+  rsi:
+    period: X
+  macd:
+    fast_period: X
+    slow_period: X
+    signal_period: X
+strategy:
+  initial_capital: 100000
+  signal_system: trigger_chain  # indicator_pair, ema_233, or trigger_chain
+  timeframe: 5min               # 1min or 5min
+  trade_mode: equities          # equities or options
